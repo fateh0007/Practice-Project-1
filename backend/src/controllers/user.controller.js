@@ -59,7 +59,7 @@ const loginUser = asyncHandler(async(req,res)=>{
         throw new ApiError(400, "Identifier and password are required")
     }
 
-    const user = User.findOne({
+    const user = await User.findOne({
         $or: [{username: identifier.toLowerCase()}, {email: identifier.toLowerCase()}]
     })
 
@@ -70,7 +70,7 @@ const loginUser = asyncHandler(async(req,res)=>{
     const isPasswordValid = await user.isPasswordCorrect(password)
 
     if(!isPasswordValid){
-        throw new ApiError(401, "Wrong password")
+        throw new ApiError(401, "Invalid Credentials")
     }
 
     const {accessToken, refreshToken} = await generateAccessAndRefreshToken(user._id)
@@ -99,4 +99,35 @@ const loginUser = asyncHandler(async(req,res)=>{
     )
 })
 
-export {registerUser, loginUser}
+const logoutUser = asyncHandler(async(req,res)=>{
+    await User.findByIdAndUpdate(
+        req.user._id,
+        {
+            $unset: {
+                refreshToken: 1 //this removes the field from document
+            }
+        },
+        {
+            new: true
+        }
+    )
+
+    const options = {
+        httpOnly: true,
+        secure: true,
+    }
+
+    return res
+    .status(200)
+    .clearCookie("accessToken", options)
+    .clearCookie("refreshToken", options)
+    .json(
+        new ApiResponse(200, {}, "User logged out successfully")
+    )
+})
+
+const refreshAccessToken = asyncHandler(async(req,res)=>{
+    
+})
+
+export {registerUser, loginUser, logoutUser}
