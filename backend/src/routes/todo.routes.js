@@ -1,6 +1,6 @@
 import {Router} from "express"
-import {createTodo, getAllTodos, getTodoById, updateTodo, deleteTodo} from "../controllers/todo.controller"
-import {verifyJWT} from "../middlewares/auth.middleware"
+import {createTodo, getAllTodos, getTodoById, updateTodo, deleteTodo} from "../controllers/todo.controller.js"
+import {verifyJWT} from "../middlewares/auth.middleware.js"
 
 const router = Router()
 
