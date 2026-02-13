@@ -4,7 +4,7 @@ import './App.css'
 import Login from './pages/Login'
 import ProtectedRoute from './components/layout/ProtectedRoute'
 import Register from './pages/Register'
-// import Todos from './pages/Todos'
+import Todos from './pages/Todos'
 
 function App() {
   
@@ -14,15 +14,15 @@ function App() {
       <Routes>
         <Route path="/login" element={<Login/>}/>
         <Route path="/register" element={<Register/>}/>
-        {/*<Route
+        <Route
           path="/todos"
           element={
             <ProtectedRoute>
               <Todos/>
-            </ProtectedRoutre>
+            </ProtectedRoute>
           }
         />
-        <Route path="/" element={<Navigate to="/todos" replace/>}/> */}
+        <Route path="/" element={<Navigate to="/todos" replace/>}/> 
       </Routes>
     </BrowserRouter>
   )

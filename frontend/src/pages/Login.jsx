@@ -39,9 +39,9 @@ const Login = () => {
                         <input type="text" value={identifier} onChange={(e)=> setIdentifier(e.target.value)} required className="mt-1 w-full px-3 py-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"/>
                     </div>
                     <div>
-                        <lablel className="block text-sm font-medium text-gray-700">
+                        <label className="block text-sm font-medium text-gray-700">
                             Password
-                        </lablel>
+                        </label>
                         <input type="password" value={password} onChange={(e)=> setPassword(e.target.value)} required className="mt-1 w-full px-3 py-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"/>
                     </div>
                     <button type="submit" disabled={loading} className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition disabled:opacity-50">

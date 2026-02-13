@@ -16,6 +16,7 @@ const generateAccessAndRefreshToken = async(userId) => {
         
         return {accessToken, refreshToken}
     } catch (error) {
+        console.error("TOKEN GENERATION ERROR 👉", error);
         throw new ApiError(500, "Something went wrong while generating access and refresh token")
     }
 }
@@ -79,7 +80,8 @@ const loginUser = asyncHandler(async(req,res)=>{
     
     const options = {
         httpOnly: true,
-        secure: true
+        secure: false,
+        sameSite: "lax"
     }
 
     return res
@@ -114,7 +116,8 @@ const logoutUser = asyncHandler(async(req,res)=>{
 
     const options = {
         httpOnly: true,
-        secure: true,
+        secure: false,
+        sameSite: "lax"
     }
 
     return res
@@ -135,7 +138,7 @@ const refreshAccessToken = asyncHandler(async(req,res)=>{
 
     try {
         const decodedToken = jwt.verify(incomingrefreshToken, process.env.REFRESH_TOKEN_SECRET)
-        const user = await User.findById(decodedToken?._id).select("-password -refreshToken")
+        const user = await User.findById(decodedToken?._id).select("-password")
         
         if(!user){
             throw new ApiError(401, "Invalid refresh token")
@@ -147,7 +150,8 @@ const refreshAccessToken = asyncHandler(async(req,res)=>{
 
         const options = {
             httpOnly: true,
-            secure: true
+            secure: false,
+            sameSite: "lax"
         }
         const {accessToken, refreshToken: newRefreshToken} = await generateAccessAndRefreshToken(user._id)
         
