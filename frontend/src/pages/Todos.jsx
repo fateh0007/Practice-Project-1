@@ -6,6 +6,7 @@ import {
   updateTodo,
   deleteTodo,
 } from "../api/todo.api";
+import TodoForm from "../components/todos/TodoForm";
 
 const Todos = () => {
   const { logout } = useAuth();
@@ -13,9 +14,6 @@ const Todos = () => {
   const [todos, setTodos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
 
   const [editingTodoId, setEditingTodoId] = useState(null);
   const [editTitle, setEditTitle] = useState("");
@@ -36,23 +34,6 @@ const Todos = () => {
 
     fetchTodos();
   }, []);
-
-  /* ---------------- Create Todo ---------------- */
-  const handleCreateTodo = async (e) => {
-    e.preventDefault();
-    setError("");
-
-    if (!title.trim() || !description.trim()) return;
-
-    try {
-      const res = await createTodo({ title, description });
-      setTodos((prev) => [res.data.data, ...prev]);
-      setTitle("");
-      setDescription("");
-    } catch {
-      setError("Failed to create todo");
-    }
-  };
 
   /* ---------------- Toggle Todo ---------------- */
   const handleToggleTodo = async (todo) => {
@@ -119,27 +100,16 @@ const Todos = () => {
         {error && <p className="text-center text-red-600 mb-4">{error}</p>}
 
         {/* Create Todo */}
-        <form onSubmit={handleCreateTodo} className="space-y-3 mb-6">
-          <input
-            type="text"
-            placeholder="Title"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            className="w-full border px-3 py-2 rounded focus:ring-2 focus:ring-blue-500"
-          />
-          <textarea
-            placeholder="Description"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            className="w-full border px-3 py-2 rounded focus:ring-2 focus:ring-blue-500"
-          />
-          <button
-            type="submit"
-            className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition"
-          >
-            Add Todo
-          </button>
-        </form>
+        <TodoForm
+          onCreate={async (data) => {
+            try {
+                const res = await createTodo(data);
+                setTodos((prev) => [res.data.data, ...prev]);
+            } catch (error) {
+                setError("Failed to create Todo")
+            }
+          }}
+        />
 
         {/* Todo List */}
         <ul className="space-y-3">
