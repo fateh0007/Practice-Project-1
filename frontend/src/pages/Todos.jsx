@@ -7,6 +7,7 @@ import {
   deleteTodo,
 } from "../api/todo.api";
 import TodoForm from "../components/todos/TodoForm";
+import TodoItem from "../components/todos/TodoItem";
 
 const Todos = () => {
   const { logout } = useAuth();
@@ -117,86 +118,20 @@ const Todos = () => {
             const isEditing = editingTodoId === todo._id;
 
             return (
-              <li
+              <TodoItem
                 key={todo._id}
-                className="border p-4 rounded flex justify-between gap-4"
-              >
-                {/* Content */}
-                <div className="flex-1">
-                  {isEditing ? (
-                    <div className="space-y-2">
-                      <input
-                        value={editTitle}
-                        onChange={(e) => setEditTitle(e.target.value)}
-                        className="w-full border px-2 py-1 rounded"
-                      />
-                      <textarea
-                        value={editDescription}
-                        onChange={(e) =>
-                          setEditDescription(e.target.value)
-                        }
-                        className="w-full border px-2 py-1 rounded"
-                      />
-                    </div>
-                  ) : (
-                    <>
-                      <h3
-                        className={`font-semibold ${
-                          todo.completed
-                            ? "line-through text-gray-400"
-                            : ""
-                        }`}
-                      >
-                        {todo.title}
-                      </h3>
-                      <p className="text-sm text-gray-600">
-                        {todo.description}
-                      </p>
-                    </>
-                  )}
-                </div>
-
-                {/* Actions */}
-                <div className="flex flex-col gap-2 text-sm">
-                  {isEditing ? (
-                    <>
-                      <button
-                        onClick={() => saveEdit(todo._id)}
-                        className="text-blue-600 hover:underline"
-                      >
-                        Save
-                      </button>
-                      <button
-                        onClick={cancelEditing}
-                        className="text-gray-500 hover:underline"
-                      >
-                        Cancel
-                      </button>
-                    </>
-                  ) : (
-                    <>
-                      <button
-                        onClick={() => handleToggleTodo(todo)}
-                        className="text-blue-600 hover:underline"
-                      >
-                        {todo.completed ? "Undo" : "Done"}
-                      </button>
-                      <button
-                        onClick={() => startEditing(todo)}
-                        className="text-green-600 hover:underline"
-                      >
-                        Edit
-                      </button>
-                      <button
-                        onClick={() => handleDeleteTodo(todo._id)}
-                        className="text-red-600 hover:underline"
-                      >
-                        Delete
-                      </button>
-                    </>
-                  )}
-                </div>
-              </li>
+                todo={todo}
+                isEditing={editingTodoId === todo._id}
+                editTitle={editTitle}
+                editDescription={editDescription}
+                onToggle={handleToggleTodo}
+                onDelete={handleDeleteTodo}
+                onStartEdit={startEditing}
+                onSave={saveEdit}
+                onCancel={cancelEditing}
+                onEditTitleChange={setEditTitle}
+                onEditDescriptionChange={setEditDescription}
+              />
             );
           })}
         </ul>
