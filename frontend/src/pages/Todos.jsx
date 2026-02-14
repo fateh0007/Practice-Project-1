@@ -56,9 +56,14 @@ const Todos = () => {
       completed: !todo.completed,
     });
 
-    setTodos((prev) =>
-      prev.map((t) => (t._id === todo._id ? res.data.data : t))
-    );
+    // setTodos((prev) =>
+    //   prev.map((t) => (t._id === todo._id ? res.data.data : t))
+    // );
+    setTodos((prev)=>
+        prev.map((t)=>
+            (t._id===todo._id ?res.data.data: t)
+        )
+    )
   };
 
   // Delete todo
@@ -68,7 +73,7 @@ const Todos = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-700 p-6">
+    <div className="min-h-screen bg-gray-800 p-6">
       <div className="max-w-2xl mx-auto bg-white p-6 rounded-lg shadow">
         {/* Header */}
         <div className="flex justify-between items-center mb-6">
